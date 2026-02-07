@@ -21,6 +21,10 @@ import Participants from './pages/organizer/Participants';
 // Admin Pages
 import AdminPanel from './pages/admin/AdminPanel';
 
+// Shared Pages
+import ChatRoom from './pages/shared/ChatRoom';
+import ChatRoomList from './components/ChatRoomList';
+
 import './styles/theme.css';
 
 function App() {
@@ -52,6 +56,11 @@ function App() {
                     <MyEvents />
                   </ProtectedRoute>
                 } />
+                <Route path="/student/chat" element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <ChatRoomList />
+                  </ProtectedRoute>
+                } />
 
                 {/* Organizer Routes */}
                 <Route path="/organizer" element={
@@ -69,11 +78,28 @@ function App() {
                     <Participants />
                   </ProtectedRoute>
                 } />
+                <Route path="/organizer/chat" element={
+                  <ProtectedRoute allowedRoles={['organizer', 'admin']}>
+                    <ChatRoomList />
+                  </ProtectedRoute>
+                } />
 
                 {/* Admin Routes */}
                 <Route path="/admin" element={
                   <ProtectedRoute allowedRoles={['admin']}>
                     <AdminPanel />
+                  </ProtectedRoute>
+                } />
+                <Route path="/admin/chat" element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <ChatRoomList />
+                  </ProtectedRoute>
+                } />
+
+                {/* Chat Route - accessible to all authenticated users */}
+                <Route path="/chat/:eventId" element={
+                  <ProtectedRoute allowedRoles={['student', 'organizer', 'admin']}>
+                    <ChatRoom />
                   </ProtectedRoute>
                 } />
 

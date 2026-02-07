@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventAPI, registrationAPI } from '../../services/api';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
+import EventChat from '../../components/EventChat';
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -12,6 +14,8 @@ const EventDetails = () => {
     const [loading, setLoading] = useState(true);
     const [registering, setRegistering] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
+    const [chatAccess, setChatAccess] = useState({ hasAccess: false, isOrganizer: false });
+    const { token } = useAuth();
 
     useEffect(() => {
         fetchEvent();
@@ -21,11 +25,28 @@ const EventDetails = () => {
         try {
             const response = await eventAPI.getById(id);
             setEvent(response.data);
+            // Check chat access
+            checkChatAccess();
         } catch (error) {
             console.error('Failed to fetch event:', error);
             setMessage({ type: 'error', text: 'Event not found' });
         } finally {
             setLoading(false);
+        }
+    };
+
+    const checkChatAccess = async () => {
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${apiUrl}/chat/${id}/access`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setChatAccess(data);
+            }
+        } catch (err) {
+            console.error('Failed to check chat access:', err);
         }
     };
 
@@ -151,6 +172,14 @@ const EventDetails = () => {
                 {event.status === 'closed' && (
                     <div className="closed-notice">
                         ⚠️ Registration for this event is closed
+                    </div>
+                )}
+
+                {/* Event Chat - visible only to registered users */}
+                {chatAccess.hasAccess && (
+                    <div style={{ marginTop: '24px' }}>
+                        <h3 style={{ marginBottom: '12px', color: 'white' }}>💬 Event Chat</h3>
+                        <EventChat eventId={id} isOrganizer={chatAccess.isOrganizer} />
                     </div>
                 )}
             </div>

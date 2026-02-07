@@ -18,7 +18,7 @@
     --accent-glow: rgba(155, 93, 229, 0.5);
 
     /* Backgrounds */
-    --bg-dark: #0d0d0d;
+    --bg-dark: #4a0606;
     --bg-darker: #050505;
     --bg-surface: #151515;
     --bg-surface-light: #1f1f1f;
@@ -83,13 +83,6 @@ body {
     font-size: 1.1rem;
     line-height: 1.6;
     overflow-x: hidden;
-
-    /* Animated Background */
-    background-image:
-        radial-gradient(ellipse at 10% 20%, rgba(255, 10, 84, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 90% 80%, rgba(0, 245, 212, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(155, 93, 229, 0.03) 0%, transparent 70%);
-    background-attachment: fixed;
 }
 
 /* ========================================
@@ -98,6 +91,29 @@ body {
 .app {
     display: flex;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Chibi pattern overlay - appears on all pages (login page uses different container) */
+.app::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../assets/chibi-pattern.png');
+    background-repeat: repeat;
+    background-size: 300px;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Ensure main content is above the pattern */
+.app>* {
+    position: relative;
+    z-index: 1;
 }
 
 /* ========================================

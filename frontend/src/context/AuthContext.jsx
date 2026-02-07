@@ -13,15 +13,17 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const initAuth = async () => {
-            const token = localStorage.getItem('token');
+            const savedToken = localStorage.getItem('token');
             const savedUser = localStorage.getItem('user');
 
-            if (token && savedUser) {
+            if (savedToken && savedUser) {
                 try {
+                    setToken(savedToken);
                     setUser(JSON.parse(savedUser));
                 } catch (error) {
                     localStorage.removeItem('token');
@@ -36,34 +38,38 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         const response = await authAPI.login({ email, password });
-        const { token, user } = response.data;
+        const { token: newToken, user: newUser } = response.data;
 
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
+        localStorage.setItem('token', newToken);
+        localStorage.setItem('user', JSON.stringify(newUser));
+        setToken(newToken);
+        setUser(newUser);
 
-        return user;
+        return newUser;
     };
 
     const register = async (name, email, password, role) => {
         const response = await authAPI.register({ name, email, password, role });
-        const { token, user } = response.data;
+        const { token: newToken, user: newUser } = response.data;
 
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
+        localStorage.setItem('token', newToken);
+        localStorage.setItem('user', JSON.stringify(newUser));
+        setToken(newToken);
+        setUser(newUser);
 
-        return user;
+        return newUser;
     };
 
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        setToken(null);
         setUser(null);
     };
 
     const value = {
         user,
+        token,
         loading,
         login,
         register,

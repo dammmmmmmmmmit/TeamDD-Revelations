@@ -61,6 +61,11 @@ const Icons = {
             <polyline points="16,17 21,12 16,7" />
             <line x1="21" y1="12" x2="9" y2="12" />
         </svg>
+    ),
+    chat: (
+        <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
     )
 };
 
@@ -152,6 +157,10 @@ const Navbar = () => {
                                     {Icons.myEvents}
                                     <span>My Events</span>
                                 </Link>
+                                <Link to="/student/chat" className={isActive('/student/chat') ? 'active' : ''}>
+                                    {Icons.chat}
+                                    <span>Chat Rooms</span>
+                                </Link>
                             </>
                         )}
                         {user.role === 'organizer' && (
@@ -164,6 +173,10 @@ const Navbar = () => {
                                     {Icons.create}
                                     <span>Create Event</span>
                                 </Link>
+                                <Link to="/organizer/chat" className={isActive('/organizer/chat') ? 'active' : ''}>
+                                    {Icons.chat}
+                                    <span>Chat Rooms</span>
+                                </Link>
                             </>
                         )}
                         {user.role === 'admin' && (
@@ -171,6 +184,10 @@ const Navbar = () => {
                                 <Link to="/admin" className={isActive('/admin') ? 'active' : ''}>
                                     {Icons.admin}
                                     <span>Control Panel</span>
+                                </Link>
+                                <Link to="/admin/chat" className={isActive('/admin/chat') ? 'active' : ''}>
+                                    {Icons.chat}
+                                    <span>All Chat Rooms</span>
                                 </Link>
                             </>
                         )}

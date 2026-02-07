@@ -14,6 +14,17 @@ const registrationSchema = new mongoose.Schema({
     registeredAt: {
         type: Date,
         default: Date.now
+    },
+    isBanned: {
+        type: Boolean,
+        default: false
+    },
+    bannedAt: {
+        type: Date
+    },
+    bannedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     timestamps: true

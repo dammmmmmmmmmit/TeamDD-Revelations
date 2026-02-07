@@ -71,7 +71,7 @@ const Icons = {
 
 // Decorative Portal SVG
 const PortalSVG = () => (
-    <svg width="60" height="60" viewBox="0 0 100 100" style={{ marginBottom: '0.5rem' }}>
+    <svg width="42" height="42" viewBox="0 0 100 100" style={{ flexShrink: 0 }}>
         <defs>
             <linearGradient id="portalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#ff0a54" />
@@ -208,11 +208,11 @@ const Navbar = () => {
 
             {user && (
                 <div className="user-info">
-                    <div className="user-avatar">
-                        {getInitials(user.name)}
+                    <div className="user-avatar">{getInitials(user.name)}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+                        <span className="user-name">{user.name}</span>
+                        <span className="user-role">{user.role}</span>
                     </div>
-                    <span className="user-name">{user.name}</span>
-                    <span className="user-role">{user.role}</span>
                     <button onClick={handleLogout} className="btn btn-logout">
                         {Icons.logout}
                         <span>Exit Portal</span>

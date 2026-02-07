@@ -6,6 +6,12 @@ const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
 const connectDB = require('./config/db');
 
+if (!process.env.JWT_SECRET) {
+    console.warn('[config] JWT_SECRET is not set; using an insecure dev default.');
+    console.warn('[config] Create backend/.env and set JWT_SECRET to a strong value.');
+    process.env.JWT_SECRET = 'dev_jwt_secret_change_me';
+}
+
 // Import routes
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');

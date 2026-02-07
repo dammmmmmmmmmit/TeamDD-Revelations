@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
-import vecnaImage from '../assets/vecna.jpg';
 
 // SVG Icons
 const Icons = {
@@ -48,77 +46,13 @@ const Icons = {
     )
 };
 
-// Animated Eyes Component for Vecna
-const VecnaEyes = ({ mouseX, mouseY }) => {
-    // Calculate eye movement based on mouse position
-    const eyeMoveX = typeof window !== 'undefined'
-        ? ((mouseX / window.innerWidth) - 0.5) * 12
-        : 0;
-    const eyeMoveY = typeof window !== 'undefined'
-        ? ((mouseY / window.innerHeight) - 0.5) * 6
-        : 0;
-
-    const eyeContainerStyle = {
-        position: 'absolute',
-        top: '28%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '60px',
-        zIndex: 10
-    };
-
-    const eyeSocketStyle = {
-        width: '35px',
-        height: '20px',
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 0 15px rgba(185, 14, 10, 0.8), inset 0 0 10px rgba(0, 0, 0, 1)'
-    };
-
-    const pupilStyle = {
-        width: '12px',
-        height: '12px',
-        backgroundColor: '#ff0a0a',
-        borderRadius: '50%',
-        boxShadow: '0 0 10px #ff0a0a, 0 0 20px #ff0a0a'
-    };
-
-    return (
-        <div style={eyeContainerStyle}>
-            <div style={eyeSocketStyle}>
-                <motion.div
-                    style={pupilStyle}
-                    animate={{ x: eyeMoveX, y: eyeMoveY }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                />
-            </div>
-            <div style={eyeSocketStyle}>
-                <motion.div
-                    style={pupilStyle}
-                    animate={{ x: eyeMoveX, y: eyeMoveY }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                />
-            </div>
-        </div>
-    );
-};
-
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [mouseX, setMouseX] = useState(0);
-    const [mouseY, setMouseY] = useState(0);
-
-    const handleMouseMove = (e) => {
-        setMouseX(e.clientX);
-        setMouseY(e.clientY);
-    };
+    const heroPng = '/stranger-hero.png';
+    const heroFallback = '/stranger-hero.svg';
 
     const { login } = useAuth();
     const { theme } = useTheme();
@@ -145,40 +79,27 @@ const Login = () => {
 
     // Styles
     const containerStyle = {
-        display: 'flex',
-        minHeight: '100vh',
-        background: 'transparent'
-    };
-
-    const leftPanelStyle = {
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '2rem',
-        background: 'transparent'
-    };
-
-    const rightPanelStyle = {
-        flex: 1,
         position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        minHeight: '100vh',
+        background: 'transparent',
         overflow: 'hidden'
     };
 
-    const vecnaContainerStyle = {
+    const leftPanelStyle = {
         position: 'relative',
-        width: '100%',
-        height: '100%'
+        zIndex: 2,
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '2rem'
     };
 
-    const vecnaImageStyle = {
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-        filter: 'brightness(0.8) contrast(1.1)'
+    const heroContainerStyle = {
+        position: 'absolute',
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: 'none'
     };
 
     const cardStyle = {
@@ -189,12 +110,26 @@ const Login = () => {
         width: '100%',
         maxWidth: '420px',
         border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(185, 14, 10, 0.2)'
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.55), 0 0 60px rgba(255, 10, 84, 0.18)'
     };
 
     return (
-        <div style={containerStyle} onMouseMove={handleMouseMove}>
-            {/* Left Panel - Login Form */}
+        <div style={containerStyle} className="login-page">
+            {/* Overlapping Hero Image */}
+            <div style={heroContainerStyle} className="auth-hero auth-hero--overlap">
+                <img
+                    src={heroPng}
+                    alt="Stranger Things themed hero"
+                    className="auth-hero-img"
+                    onError={(e) => {
+                        if (e.currentTarget.src.includes('stranger-hero.png')) {
+                            e.currentTarget.src = heroFallback;
+                        }
+                    }}
+                />
+            </div>
+
+            {/* Login Form */}
             <div style={leftPanelStyle}>
                 <div style={cardStyle}>
                     <div style={{ textAlign: 'center' }}>
@@ -256,13 +191,6 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Right Panel - Vecna Image with Animated Eyes */}
-            <div style={rightPanelStyle}>
-                <div style={vecnaContainerStyle}>
-                    <img src={vecnaImage} alt="Vecna" style={vecnaImageStyle} />
-                    <VecnaEyes mouseX={mouseX} mouseY={mouseY} />
-                </div>
-            </div>
         </div>
     );
 };

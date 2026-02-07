@@ -23,9 +23,9 @@ const Icons = {
         <svg width="60" height="60" viewBox="0 0 100 100" style={{ marginBottom: '1rem' }}>
             <defs>
                 <linearGradient id="loginPortalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#ff0a54" />
-                    <stop offset="50%" stopColor="#00f5d4" />
-                    <stop offset="100%" stopColor="#9b5de5" />
+                    <stop offset="0%" stopColor="#8B0000" />
+                    <stop offset="50%" stopColor="#DC143C" />
+                    <stop offset="100%" stopColor="#ff0a0a" />
                 </linearGradient>
                 <filter id="loginGlow">
                     <feGaussianBlur stdDeviation="3" result="coloredBlur" />
@@ -52,19 +52,19 @@ const Icons = {
 const VecnaEyes = ({ mouseX, mouseY }) => {
     // Calculate eye movement based on mouse position
     const eyeMoveX = typeof window !== 'undefined'
-        ? ((mouseX / window.innerWidth) - 0.5) * 12
+        ? ((mouseX / window.innerWidth) - 0.5) * 8
         : 0;
     const eyeMoveY = typeof window !== 'undefined'
-        ? ((mouseY / window.innerHeight) - 0.5) * 6
+        ? ((mouseY / window.innerHeight) - 0.5) * 4
         : 0;
 
     const eyeContainerStyle = {
         position: 'absolute',
-        top: '28%',
-        left: '50%',
+        top: '38%',
+        left: '48%',
         transform: 'translateX(-50%)',
         display: 'flex',
-        gap: '60px',
+        gap: '165px',
         zIndex: 10
     };
 

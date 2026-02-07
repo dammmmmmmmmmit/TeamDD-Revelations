@@ -74,9 +74,9 @@ const PortalSVG = () => (
     <svg width="60" height="60" viewBox="0 0 100 100" style={{ marginBottom: '0.5rem' }}>
         <defs>
             <linearGradient id="portalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ff0a54" />
-                <stop offset="50%" stopColor="#00f5d4" />
-                <stop offset="100%" stopColor="#9b5de5" />
+                <stop offset="0%" stopColor="#8B0000" />
+                <stop offset="50%" stopColor="#DC143C" />
+                <stop offset="100%" stopColor="#ff0a0a" />
             </linearGradient>
             <filter id="glow">
                 <feGaussianBlur stdDeviation="2" result="coloredBlur" />
